@@ -127,7 +127,7 @@ module SimplePoParser
           skip_whitespace
           text = message_line
           add_result(:msgid, text)
-          message_multiline(:msgid) if text.empty?
+          message_multiline(:msgid)
           if msgid_plural
             msgstr_plural
           else
@@ -178,7 +178,7 @@ module SimplePoParser
           skip_whitespace
           raise PoSyntaxError, "Unexpected content after expected message end #{@scanner.peek(10).inspect}" unless @scanner.eos?
         else
-         raise PoSyntaxError, "Singular message without msgstr is not allowed. Line started unexpectedly with #{@scanner.peek(10).inspect}."
+         raise PoSyntaxError, "Singular message without msgstr is not allowed. Line started unexpectedly with #{@scanner.peek(10).inspect}:#{@scanner.pos()}"
         end
       rescue PoSyntaxError => pe
         raise PoSyntaxError, "Syntax error in msgstr\n" + pe.message, pe.backtrace
