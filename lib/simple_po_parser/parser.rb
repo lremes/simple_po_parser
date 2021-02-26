@@ -174,7 +174,7 @@ module SimplePoParser
           skip_whitespace
           text = message_line
           add_result(:msgstr, text)
-          message_multiline(:msgstr) if text.empty?
+          message_multiline(:msgstr)
           skip_whitespace
           raise PoSyntaxError, "Unexpected content after expected message end #{@scanner.peek(10).inspect}" unless @scanner.eos?
         else
@@ -265,8 +265,7 @@ module SimplePoParser
 
     # parses a multiline message
     #
-    # multiline messages are indicated by an empty content as first line and the next line
-    # starting with the double quote character
+    # multiline messages are by the next line starting with the double quote character
     def message_multiline(key)
       begin
         skip_whitespace

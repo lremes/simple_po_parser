@@ -5,10 +5,18 @@ describe SimplePoParser do
   let(:crlf_file) { Pathname.new('spec/simple_po_parser/fixtures/crlf_encoded.po').realpath }
   let(:non_ascii_file) { Pathname.new('spec/simple_po_parser/fixtures/non_ascii_file.po').realpath }
   let(:po_complex_message) { File.read(File.expand_path("fixtures/complex_entry.po", __dir__))}
+  let(:po_multilline) { File.read(File.expand_path("fixtures/multiline_entry.po", __dir__))}
+
+  it "parses a multiline entry" do
+    msg = SimplePoParser.parse_message(po_multilline)
+    expect(msg).to be_a_kind_of Hash
+    expect(msg[:msgstr]).to eq([ "multi\\n", "line"])
+  end
 
   it "parses a po file" do
     expect(SimplePoParser.parse(po_file)).to be_a_kind_of Array
   end
+
   it "parses crlf encoded files" do
     expect(SimplePoParser.parse(crlf_file)).to be_a_kind_of Array
   end
@@ -18,7 +26,8 @@ describe SimplePoParser do
   end
 
   it "parses a single message" do
-    expect(SimplePoParser.parse_message(po_complex_message)).to be_a_kind_of Hash
+    msg = SimplePoParser.parse_message(po_complex_message)
+    expect(msg).to be_a_kind_of Hash
   end
 
 end
